@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Appointment Service API
+  version: 1.0.0
+  description: |
+    API backend para gestionar agendamientos médicos de asegurados.
+    Permite registrar y consultar agendamientos. Implementación basada en AWS Lambda, DynamoDB, SNS, SQS y EventBridge.
+
+servers:
+  - url: https://2vu40s1va9.execute-api.us-east-1.amazonaws.com
+    description: API Gateway base URL (cambiar al desplegar)
+  - url: http://localhost:3000
+    description: Serverless Offline local
+
+paths:
+  /appointments:
+    post:
+      summary: Registrar un nuevo agendamiento
+      description: Registra la solicitud de agendamiento en DynamoDB y envía el evento al SNS correspondiente.
+      operationId: createAppointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentRequest'
+      responses:
+        '202':
+          description: Agendamiento recibido y en proceso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentResponse'
+        '400':
+          description: Petición inválida
+
+  /appointments/{insuredId}:
+    get:
+      summary: Listar agendamientos por asegurado
+      description: Devuelve todos los agendamientos registrados por un asegurado, incluyendo su estado actual.
+      operationId: getAppointmentsByInsured
+      parameters:
+        - name: insuredId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "00123"
+      responses:
+        '200':
+          description: Lista de agendamientos del asegurado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentListResponse'
+        '404':
+          description: No se encontraron registros para el asegurado
+
+components:
+  schemas:
+    AppointmentRequest:
+      type: object
+      required:
+        - insuredId
+        - scheduleId
+        - countryISO
+      properties:
+        insuredId:
+          type: string
+          description: Código de asegurado (5 dígitos)
+          example: "00456"
+        scheduleId:
+          type: integer
+          description: Identificador del espacio disponible
+          example: 200
+        countryISO:
+          type: string
+          enum: [PE, CL]
+          description: Código ISO del país
+          example: "PE"
+
+    AppointmentResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Cita creada exitosamente"
+        data:
+          type: object
+          properties:
+            appointmentId:
+              type: string
+              example: "81433002-e42d-40a1-a4e2-a01aa90c4004"
+            insuredId:
+              type: string
+              example: "00456"
+            scheduleId:
+              type: integer
+              example: 200
+            countryISO:
+              type: string
+              example: "PE"
+            status:
+              type: string
+              example: "pending"
+            createdAt:
+              type: string
+              format: date-time
+              example: "2025-10-25T16:30:19.610Z"
+            updatedAt:
+              type: string
+              format: date-time
+              example: "2025-10-25T16:30:19.610Z"
+
+    AppointmentRecord:
+      type: object
+      properties:
+        appointmentId:
+          type: string
+          example: "appt-123abc"
+        insuredId:
+          type: string
+          example: "00123"
+        scheduleId:
+          type: integer
+          example: 100
+        countryISO:
+          type: string
+          example: "PE"
+        status:
+          type: string
+          enum: [pending, completed]
+          example: "completed"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-09-30T12:30:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-10-25T16:28:18.578Z"
+
+    AppointmentListResponse:
+      type: object
+      properties:
+        insuredId:
+          type: string
+          example: "00123"
+        count:
+          type: integer
+          example: 1
+        appointments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AppointmentRecord'

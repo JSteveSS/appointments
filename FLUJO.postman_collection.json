@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "f97516e5-3f6f-4b4e-9577-1526c99202c4",
+		"name": "FLUJO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36608890"
+	},
+	"item": [
+		{
+			"name": "CREAR_CITA",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"insuredId\": \"00456\",\r\n    \"scheduleId\": 200,\r\n    \"countryISO\": \"PE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://2vu40s1va9.execute-api.us-east-1.amazonaws.com/appointments",
+					"protocol": "https",
+					"host": [
+						"2vu40s1va9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"appointments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OBTENER_CITA_BY_ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://2vu40s1va9.execute-api.us-east-1.amazonaws.com/appointments/{insuredId}",
+					"protocol": "https",
+					"host": [
+						"2vu40s1va9",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"appointments",
+						"{insuredId}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

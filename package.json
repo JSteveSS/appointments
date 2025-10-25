@@ -1,0 +1,40 @@
+{
+  "name": "appointment-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node src/app.ts",
+    "deploy": "serverless deploy",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove": "serverless remove",
+    "logs": "serverless logs -f appointment -t"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.156",
+    "@types/express": "^5.0.4",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.9.1",
+    "jest": "^30.2.0",
+    "serverless": "^4.22.0",
+    "serverless-offline": "^14.4.0",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.917.0",
+    "@aws-sdk/client-eventbridge": "^3.917.0",
+    "@aws-sdk/client-sns": "^3.917.0",
+    "@aws-sdk/lib-dynamodb": "^3.917.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3",
+    "serverless-http": "^4.0.0",
+    "uuid": "^13.0.0"
+  }
+}

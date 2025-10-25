@@ -1,0 +1,8 @@
+.env
+.env.example
+node_modules/
+.serverless/
+dist/
+.build/
+*.log
+.DS_Store
